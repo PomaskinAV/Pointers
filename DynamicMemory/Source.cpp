@@ -4,7 +4,7 @@ using namespace std;
 void FillRand(int arr[], const unsigned int n);
 void Print(int arr[], const unsigned int n);
 
-int* push_back(int arr[], int& n, int value);
+void push_back(int** arr, int& n, int value);
 int* push_front(int arr[], int& n, int value1);
 int* insert(int arr[], int& n, int index, int value2);
 int* pop_back(int arr[], int& n);
@@ -21,7 +21,7 @@ void main()
 	Print(arr, n);
 	int value;
 	cout << "Введите добавляемое значение: "; cin >> value;
-	arr = push_back(arr, n, value);
+	push_back(&arr, n, value);
 	Print(arr, n);
 	int value1;
 	cout << "Введите добавляемое значение: "; cin >> value1;
@@ -60,7 +60,7 @@ void Print(int arr[], const unsigned int n)
 	}
 	cout << endl;
 }
-int* push_back(int arr[], int& n, int value)
+void push_back(int** arr, int& n, int value)
 {
 	///Добавление элементов в массив
 	//1. Создаем буферный массив нужного размера
@@ -68,17 +68,16 @@ int* push_back(int arr[], int& n, int value)
 	//2. Копируем исходный массив в buffer
 	for (int i = 0; i < n; i++)
 	{
-		buffer[i] = arr[i];
+		buffer[i] = (*arr)[i];
 	}
 	//3. Удаляем исходный массив
-	delete[] arr;
+	delete[] *arr;
 	//4. Подменяем исходный массив новым (буферным), за счет подмены адреса
-	arr = buffer;
+	*arr = buffer;
 	//5. Только после всех этих действий можно добавить значение в конец массива
-	arr[n] = value;
+	(*arr)[n] = value;
 	//6. После добавления элементов в массив количество его элементов увеличивается на один
 	n++;
-	return arr;
 }
 int* push_front(int arr[], int& n, int value1)
 {
