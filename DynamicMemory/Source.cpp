@@ -119,8 +119,12 @@ int* insert(int arr[], int& n, int index, int value2)
 }
 int* pop_back(int arr[], int& n)
 {
-	n--;
-	return arr;
+	int* buffer = new int[--n];
+	for (int i = 0; i < n; i++) buffer[i] = arr[i];
+	delete[] arr;
+	return buffer;
+	//n--;
+	//return arr;
 }
 int* pop_front(int arr[], int& n)
 {
