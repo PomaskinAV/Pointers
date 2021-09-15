@@ -5,15 +5,19 @@ void FillRand(int arr[], const unsigned int n);
 void Print(int arr[], const unsigned int n);
 
 void push_back(int** arr, int& n, int value);
-int* push_front(int arr[], int& n, int value1);
-int* insert(int arr[], int& n, int index, int value2);
-int* pop_back(int arr[], int& n);
-int* pop_front(int arr[], int& n);
-int* erase(int arr[], int& n, int index1);
+void push_front(int** arr, int& n, int value1);
+void insert(int** arr, int& n, int index, int value2);
+void pop_back(int** arr, int& n);
+void pop_front(int** arr, int& n);
+void erase(int** arr, int& n, int index1);
+
+#define DYNAMIC_MEMORY1
+//#define DYNAMIC_MEMORY2
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef DYNAMIC_MEMORY1
 	int n;
 	cout << "Введите размер массива: "; cin >> n;
 	int* arr = new int[n];
@@ -25,23 +29,36 @@ void main()
 	Print(arr, n);
 	int value1;
 	cout << "Введите добавляемое значение: "; cin >> value1;
-	arr = push_front(arr, n, value1);
+	push_front(&arr, n, value1);
 	Print(arr, n);
 	int value2;
 	int index;
 	cout << "Введите добавляемое значение: "; cin >> value2;
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
-	arr = insert(arr, n, index, value2);
+	insert(&arr, n, index, value2);
 	Print(arr, n);
-	arr=pop_back(arr, n);
+	pop_back(&arr, n);
 	Print(arr, n);
-	arr = pop_front(arr, n);
+	pop_front(&arr, n);
 	Print(arr, n);
 	int index1;
 	cout << "Введите индекс удаляемого элемента: "; cin >> index1;
-	arr = erase(arr, n, index1);
+	erase(&arr, n, index1);
 	Print(arr, n);
 	delete[] arr;
+#endif // DYNAMIC_MEMORY1
+
+#ifdef DYNAMIC_MEMORY2
+	int rows, cols;
+	cout << "Введите количество строк: "; cin >> rows;
+	cout << "Введите количество столбцов: "; cin >> cols;
+	int** arr = new int* [rows];
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new int[cols];
+	}
+#endif // DYNAMIC_MEMORY2
+
 }
 
 void FillRand(int arr[], const unsigned int n)
@@ -79,7 +96,7 @@ void push_back(int** arr, int& n, int value)
 	//6. После добавления элементов в массив количество его элементов увеличивается на один
 	n++;
 }
-int* push_front(int arr[], int& n, int value1)
+void push_front(int** arr, int& n, int value1)
 {
 	///Добавление элементов в массив
 	//1. Создаем буферный массив нужного размера
@@ -87,59 +104,70 @@ int* push_front(int arr[], int& n, int value1)
 	//2. Копируем исходный массив в buffer
 	for (int i = 0; i < n; i++)
 	{
-		buffer[i+1] = arr[i];
+		buffer[i+1] = (*arr)[i];
 	}
 	//3. Удаляем исходный массив
-	delete[] arr;
+	delete[] *arr;
 	//4. Подменяем исходный массив новым (буферным), за счет подмены адреса
-	arr = buffer;
+	*arr = buffer;
 	//5. Только после всех этих действий можно добавить значение в начало массива
-	arr[0] = value1;
+	(*arr)[0] = value1;
 	//6. После добавления элементов в массив количество его элементов увеличивается на один
 	n++;
-	return arr;
 }
-int* insert(int arr[], int& n, int index, int value2)
+void insert(int** arr, int& n, int index, int value2)
 {
 	int* buffer = new int[n + 1];
 	for (int i = 0; i < n; i++)
 	{
-		buffer[i] = arr[i];
+		buffer[i] = (*arr)[i];
 	}
-	delete[] arr;
-	arr = buffer;
+	delete[] *arr;
+	*arr = buffer;
 	for (int i = n-1; i >= index; i--)
 	{
-		arr[i + 1] = arr[i];
+		(*arr)[i + 1] = (*arr)[i];
 	}
-	arr[index] = value2;
+	(*arr)[index] = value2;
 	n++;
-	return arr;
 }
-int* pop_back(int arr[], int& n)
+void pop_back(int** arr, int& n)
 {
 	int* buffer = new int[--n];
-	for (int i = 0; i < n; i++) buffer[i] = arr[i];
-	delete[] arr;
-	return buffer;
-	//n--;
-	//return arr;
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i] = (*arr)[i];
+	}
+	delete[] *arr;
+	*arr = buffer;
 }
-int* pop_front(int arr[], int& n)
+void pop_front(int** arr, int& n)
 {
+	int* buffer = new int[n];
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i] = (*arr)[i];
+	}
+	delete[] *arr;
 	for (int i = 1; i < n; i++)
 	{
-		arr[i - 1] = arr[i];
+		buffer[i-1] = buffer[i];
 	}
 	n--;
-	return arr;
+	*arr = buffer;
 }
-int* erase(int arr[], int& n, int index1)
+void erase(int** arr, int& n, int index1)
 {
+	int* buffer = new int[n];
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i] = (*arr)[i];
+	}
+	delete[] *arr;
 	for (int i = index1; i < n-1; i++)
 	{
-		arr[i] = arr[i+1];
+		buffer[i] = buffer[i+1];
 	}
 	n--;
-	return arr;
+	*arr = buffer;
 }
