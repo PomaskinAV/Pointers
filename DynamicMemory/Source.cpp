@@ -143,31 +143,25 @@ void pop_back(int** arr, int& n)
 }
 void pop_front(int** arr, int& n)
 {
-	int* buffer = new int[n];
+	int* buffer = new int[--n];
 	for (int i = 0; i < n; i++)
 	{
-		buffer[i] = (*arr)[i];
+		buffer[i] = (*arr)[i+1];
 	}
 	delete[] *arr;
-	for (int i = 1; i < n; i++)
-	{
-		buffer[i-1] = buffer[i];
-	}
-	n--;
 	*arr = buffer;
 }
 void erase(int** arr, int& n, int index1)
 {
-	int* buffer = new int[n];
-	for (int i = 0; i < n; i++)
+	int* buffer = new int[--n];
+	for (int i = 0; i < index1; i++)
 	{
 		buffer[i] = (*arr)[i];
 	}
-	delete[] *arr;
-	for (int i = index1; i < n-1; i++)
+	for (int i = index1; i < n; i++)
 	{
-		buffer[i] = buffer[i+1];
+		buffer[i] = (*arr)[i+1];
 	}
-	n--;
+	delete[] *arr;
 	*arr = buffer;
 }
