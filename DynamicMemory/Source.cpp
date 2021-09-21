@@ -4,10 +4,10 @@ using namespace std;
 void FillRand(int arr[], const unsigned int n);
 void Print(int arr[], const unsigned int n);
 
-int* push_back(int arr[], int& n, int value);
+void push_back(int*& arr, int& n, int value);
 int* push_front(int arr[], int& n, int value1);
 int* insert(int arr[], int& n, int index, int value2);
-int* pop_back(int arr[], int& n);
+void pop_back(int*& arr, int& n);
 int* pop_front(int arr[], int& n);
 int* erase(int arr[], int& n, int index1);
 
@@ -21,7 +21,7 @@ void main()
 	Print(arr, n);
 	int value;
 	cout << "Введите добавляемое значение: "; cin >> value;
-	arr = push_back(arr, n, value);
+	push_back(arr, n, value);
 	Print(arr, n);
 	int value1;
 	cout << "Введите добавляемое значение: "; cin >> value1;
@@ -33,7 +33,7 @@ void main()
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	arr = insert(arr, n, index, value2);
 	Print(arr, n);
-	arr=pop_back(arr, n);
+	pop_back(arr, n);
 	Print(arr, n);
 	arr = pop_front(arr, n);
 	Print(arr, n);
@@ -60,7 +60,7 @@ void Print(int arr[], const unsigned int n)
 	}
 	cout << endl;
 }
-int* push_back(int arr[], int& n, int value)
+void push_back(int*& arr, int& n, int value)
 {
 	///Добавление элементов в массив
 	//1. Создаем буферный массив нужного размера
@@ -78,7 +78,6 @@ int* push_back(int arr[], int& n, int value)
 	arr[n] = value;
 	//6. После добавления элементов в массив количество его элементов увеличивается на один
 	n++;
-	return arr;
 }
 int* push_front(int arr[], int& n, int value1)
 {
@@ -117,12 +116,12 @@ int* insert(int arr[], int& n, int index, int value2)
 	n++;
 	return arr;
 }
-int* pop_back(int arr[], int& n)
+void pop_back(int*& arr, int& n)
 {
 	int* buffer = new int[--n];
 	for (int i = 0; i < n; i++) buffer[i] = arr[i];
 	delete[] arr;
-	return buffer;
+	arr = buffer;
 	//n--;
 	//return arr;
 }
