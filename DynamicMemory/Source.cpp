@@ -5,11 +5,11 @@ void FillRand(int arr[], const unsigned int n);
 void Print(int arr[], const unsigned int n);
 
 void push_back(int*& arr, int& n, int value);
-int* push_front(int arr[], int& n, int value1);
-int* insert(int arr[], int& n, int index, int value2);
+void push_front(int*& arr, int& n, int value1);
+void insert(int*& arr, int& n, int index, int value2);
 void pop_back(int*& arr, int& n);
-int* pop_front(int arr[], int& n);
-int* erase(int arr[], int& n, int index1);
+void pop_front(int*& arr, int& n);
+void erase(int*& arr, int& n, int index1);
 
 void main()
 {
@@ -25,21 +25,21 @@ void main()
 	Print(arr, n);
 	int value1;
 	cout << "Введите добавляемое значение: "; cin >> value1;
-	arr = push_front(arr, n, value1);
+	push_front(arr, n, value1);
 	Print(arr, n);
 	int value2;
 	int index;
 	cout << "Введите добавляемое значение: "; cin >> value2;
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
-	arr = insert(arr, n, index, value2);
+	insert(arr, n, index, value2);
 	Print(arr, n);
 	pop_back(arr, n);
 	Print(arr, n);
-	arr = pop_front(arr, n);
+	pop_front(arr, n);
 	Print(arr, n);
 	int index1;
 	cout << "Введите индекс удаляемого элемента: "; cin >> index1;
-	arr = erase(arr, n, index1);
+	erase(arr, n, index1);
 	Print(arr, n);
 	delete[] arr;
 }
@@ -79,7 +79,7 @@ void push_back(int*& arr, int& n, int value)
 	//6. После добавления элементов в массив количество его элементов увеличивается на один
 	n++;
 }
-int* push_front(int arr[], int& n, int value1)
+void push_front(int*& arr, int& n, int value1)
 {
 	///Добавление элементов в массив
 	//1. Создаем буферный массив нужного размера
@@ -97,9 +97,9 @@ int* push_front(int arr[], int& n, int value1)
 	arr[0] = value1;
 	//6. После добавления элементов в массив количество его элементов увеличивается на один
 	n++;
-	return arr;
+	//return arr;
 }
-int* insert(int arr[], int& n, int index, int value2)
+void insert(int*& arr, int& n, int index, int value2)
 {
 	int* buffer = new int[n + 1];
 	for (int i = 0; i < n; i++)
@@ -114,7 +114,7 @@ int* insert(int arr[], int& n, int index, int value2)
 	}
 	arr[index] = value2;
 	n++;
-	return arr;
+	//return arr;
 }
 void pop_back(int*& arr, int& n)
 {
@@ -125,21 +125,21 @@ void pop_back(int*& arr, int& n)
 	//n--;
 	//return arr;
 }
-int* pop_front(int arr[], int& n)
+void pop_front(int*& arr, int& n)
 {
 	for (int i = 1; i < n; i++)
 	{
 		arr[i - 1] = arr[i];
 	}
 	n--;
-	return arr;
+	//return arr;
 }
-int* erase(int arr[], int& n, int index1)
+void erase(int*& arr, int& n, int index1)
 {
 	for (int i = index1; i < n-1; i++)
 	{
 		arr[i] = arr[i+1];
 	}
 	n--;
-	return arr;
+	//return arr;
 }
