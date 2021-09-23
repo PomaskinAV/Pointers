@@ -1,8 +1,13 @@
 ﻿#include<iostream>
 using namespace std;
 
+//#define DYNAMIC_MEMORY_1
+#define DYNAMIC_MEMORY_2
+
 void FillRand(int arr[], const unsigned int n);
+void FillRand(int** arr, const unsigned int rows, const unsigned int cols);
 void Print(int arr[], const unsigned int n);
+void Print(int** arr, const unsigned int rows, const unsigned int cols);
 
 int* push_back(int arr[], int& n, int value);
 int* push_front(int arr[], int& n, int value1);
@@ -14,6 +19,7 @@ int* erase(int arr[], int& n, int index1);
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef DYNAMIC_MEMORY_1
 	int n;
 	cout << "Введите размер массива: "; cin >> n;
 	int* arr = new int[n];
@@ -33,7 +39,7 @@ void main()
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	arr = insert(arr, n, index, value2);
 	Print(arr, n);
-	arr=pop_back(arr, n);
+	arr = pop_back(arr, n);
 	Print(arr, n);
 	arr = pop_front(arr, n);
 	Print(arr, n);
@@ -41,6 +47,31 @@ void main()
 	cout << "Введите индекс удаляемого элемента: "; cin >> index1;
 	arr = erase(arr, n, index1);
 	Print(arr, n);
+	delete[] arr;
+#endif // DYNAMIC_MEMORY_1
+
+	int rows;
+	int cols;
+	cout << "Введите колличество строк: "; cin >> rows;
+	cout << "Введите колличество элементов строки: "; cin >> cols;
+	// объявление двумерного динамического массива
+	// 1. объявляем указатель на указатель и сохраняем в него адрес массива указателей
+	int** arr = new int* [rows];
+	//2. создаем строки двумерного динамического массива
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new int[cols] {};
+	}
+	// обращение к элементам ДДМ
+	FillRand(arr, rows, cols);
+	Print(arr, rows, cols);
+	//3. удаление ДДМ
+	//1. удаляем строки
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] arr[i];
+	}
+	//2. удаляем массив указателей
 	delete[] arr;
 }
 
@@ -51,7 +82,16 @@ void FillRand(int arr[], const unsigned int n)
 		arr[i] = rand() % 100;
 	}
 }
-
+void FillRand(int** arr, const unsigned int rows, const unsigned int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			arr[i][j] = rand() % 100;
+		}
+	}
+}
 void Print(int arr[], const unsigned int n)
 {
 	for (int i = 0; i < n; i++)
@@ -59,6 +99,17 @@ void Print(int arr[], const unsigned int n)
 		cout << arr[i] << "\t";
 	}
 	cout << endl;
+}
+void Print(int** arr, const unsigned int rows, const unsigned int cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
 }
 int* push_back(int arr[], int& n, int value)
 {
