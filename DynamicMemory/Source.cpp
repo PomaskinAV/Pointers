@@ -2,7 +2,8 @@
 using namespace std;
 
 //#define DYNAMIC_MEMORY_1
-#define DYNAMIC_MEMORY_2
+//#define DYNAMIC_MEMORY_2
+#define DYNAMIC_MEMORY_3
 
 int** allocate(const unsigned int rows, const unsigned int cols);
 void clear(int** arr, const unsigned int rows);
@@ -14,6 +15,7 @@ void Print(int** arr, const unsigned int rows, const unsigned int cols);
 
 int* push_back(int arr[], int& n, int value);
 int** push_row_back(int** arr, unsigned int& rows, const unsigned int cols);
+void push_col_back(int** arr, const unsigned int rows, unsigned int& cols);
 int* push_front(int arr[], int& n, int value1);
 int** push_row_front(int** arr, unsigned int& rows, const unsigned int cols);
 int* insert(int arr[], int& n, int index, int value2);
@@ -59,13 +61,14 @@ void main()
 	delete[] arr;
 #endif // DYNAMIC_MEMORY_1
 
+#ifdef DYNAMIC_MEMORY_2
 	unsigned int rows;
 	unsigned int cols;
 	cout << "Введите колличество строк: "; cin >> rows;
 	cout << "Введите колличество элементов строки: "; cin >> cols;
 	int** arr = allocate(rows, cols);
 	FillRand(arr, rows, cols);
-	arr=push_row_back(arr, rows, cols);
+	arr = push_row_back(arr, rows, cols);
 	arr = push_row_front(arr, rows, cols);
 	Print(arr, rows, cols);
 	int index;
@@ -86,8 +89,18 @@ void main()
 		}
 		cout << endl;
 	}
-	
-		clear(arr, rows);
+
+	clear(arr, rows);
+#endif // DYNAMIC_MEMORY_2
+
+	unsigned int rows;
+	unsigned int cols;
+	cout << "Введите колличество строк: "; cin >> rows;
+	cout << "Введите колличество элементов строки: "; cin >> cols;
+	int** arr = allocate(rows, cols);
+	FillRand(arr, rows, cols);
+	push_col_back(arr, rows, cols);
+	Print(arr, rows, cols);
 }
 
 int** allocate(const unsigned int rows, const unsigned int cols)
@@ -180,6 +193,21 @@ int** push_row_back(int** arr, unsigned int& rows, const unsigned int cols)
 	rows++;
 	return arr;
 }
+void push_col_back(int** arr, const unsigned int rows, unsigned int& cols)
+{
+	
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols + 1]{};
+		for (int j = 0; j < cols; j++)
+		{
+			buffer[j] = arr[i][j];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols++;
+}
 int* push_front(int arr[], int& n, int value1)
 {
 	///Добавление элементов в массив
@@ -207,6 +235,7 @@ int** push_row_front(int** arr, unsigned int& rows, const unsigned int cols)
 	{
 		buffer[i+1] = arr[i];
 	}
+	//delite[] arr[0];
 	delete[] arr;
 	arr = buffer;
 	arr[0] = new int[cols] {};
