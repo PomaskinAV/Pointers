@@ -65,7 +65,6 @@ void main()
 	cout << "Введите колличество элементов строки: "; cin >> cols;
 	int** arr = allocate(rows, cols);
 	FillRand(arr, rows, cols);
-	//Print(arr, rows, cols);
 	arr=push_row_back(arr, rows, cols);
 	arr = push_row_front(arr, rows, cols);
 	Print(arr, rows, cols);
@@ -77,7 +76,6 @@ void main()
 	arr = pop_row_back(arr, rows);
 	arr = pop_row_front(arr, rows);
 	Print(arr, rows, cols);
-	//int index;
 	cout << "Введите индекс удаляемой строки: "; cin >> index;
 	arr = erase_row(arr, rows, index);
 	for (int i = 0; i < rows; i++)
@@ -255,8 +253,6 @@ int* pop_back(int arr[], int& n)
 	for (int i = 0; i < n; i++) buffer[i] = arr[i];
 	delete[] arr;
 	return buffer;
-	//n--;
-	//return arr;
 }
 int** pop_row_back(int** arr, unsigned int& rows)
 {
