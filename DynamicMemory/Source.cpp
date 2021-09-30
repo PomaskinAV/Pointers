@@ -8,8 +8,8 @@ using namespace std;
 int** allocate(const unsigned int rows, const unsigned int cols);
 void clear(int** arr, const unsigned int rows);
 
-void FillRand(int arr[], const unsigned int n);
-void FillRand(int** arr, const unsigned int rows, const unsigned int cols);
+void FillRand(int arr[], const unsigned int n, int minRand = 0, int maxRand = 100);
+void FillRand(int** arr, const unsigned int rows, const unsigned int cols, int minRand = 0, int maxRand = 100);
 void Print(int arr[], const unsigned int n);
 void Print(int** arr, const unsigned int rows, const unsigned int cols);
 
@@ -18,8 +18,10 @@ int** push_row_back(int** arr, unsigned int& rows, const unsigned int cols);
 void push_col_back(int** arr, const unsigned int rows, unsigned int& cols);
 int* push_front(int arr[], int& n, int value1);
 int** push_row_front(int** arr, unsigned int& rows, const unsigned int cols);
+void push_col_front(int** arr, const unsigned int rows, unsigned int& cols);
 int* insert(int arr[], int& n, int index, int value2);
 int** insert_row(int** arr, unsigned int& rows, const unsigned int cols, const unsigned int index);
+void insert_col(int** arr, const unsigned int rows, unsigned int& cols, const unsigned int index);
 int* pop_back(int arr[], int& n);
 int** pop_row_back(int** arr, unsigned int& rows);
 int* pop_front(int arr[], int& n);
@@ -100,6 +102,12 @@ void main()
 	int** arr = allocate(rows, cols);
 	FillRand(arr, rows, cols);
 	push_col_back(arr, rows, cols);
+	push_col_front(arr, rows, cols);
+	//for (int i = 0; i < rows; i++)arr[i][cols - 1] = rand();
+	Print(arr, rows, cols);
+	int index;
+	cout << "Введите индекс добавляемого столбца: "; cin >> index;
+	insert_col(arr, rows, cols, index);
 	Print(arr, rows, cols);
 }
 
@@ -124,20 +132,20 @@ void clear(int** arr, const unsigned int rows)
 	delete[] arr;
 }
 
-void FillRand(int arr[], const unsigned int n)
+void FillRand(int arr[], const unsigned int n, int minRand, int maxRand)
 {
 	for (int i = 0; i < n; i++)
 	{
-		arr[i] = rand() % 100;
+		arr[i] = rand() % (maxRand - minRand) + minRand;
 	}
 }
-void FillRand(int** arr, const unsigned int rows, const unsigned int cols)
+void FillRand(int** arr, const unsigned int rows, const unsigned int cols, int minRand, int maxRand)
 {
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
 		{
-			arr[i][j] = rand() % 100;
+			arr[i][j] = rand() % (maxRand - minRand) + minRand;
 		}
 	}
 }
@@ -195,7 +203,7 @@ int** push_row_back(int** arr, unsigned int& rows, const unsigned int cols)
 }
 void push_col_back(int** arr, const unsigned int rows, unsigned int& cols)
 {
-	
+
 	for (int i = 0; i < rows; i++)
 	{
 		int* buffer = new int[cols + 1]{};
@@ -216,7 +224,7 @@ int* push_front(int arr[], int& n, int value1)
 	//2. Копируем исходный массив в buffer
 	for (int i = 0; i < n; i++)
 	{
-		buffer[i+1] = arr[i];
+		buffer[i + 1] = arr[i];
 	}
 	//3. Удаляем исходный массив
 	delete[] arr;
@@ -233,7 +241,7 @@ int** push_row_front(int** arr, unsigned int& rows, const unsigned int cols)
 	int** buffer = new int* [rows + 1]{};
 	for (int i = 0; i < rows; i++)
 	{
-		buffer[i+1] = arr[i];
+		buffer[i + 1] = arr[i];
 	}
 	//delite[] arr[0];
 	delete[] arr;
@@ -241,6 +249,20 @@ int** push_row_front(int** arr, unsigned int& rows, const unsigned int cols)
 	arr[0] = new int[cols] {};
 	rows++;
 	return arr;
+}
+void push_col_front(int** arr, const unsigned int rows, unsigned int& cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols + 1]{};
+		for (int j = 0; j < cols; j++)
+		{
+			buffer[j + 1] = arr[i][j];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols++;
 }
 int* insert(int arr[], int& n, int index, int value2)
 {
@@ -251,7 +273,7 @@ int* insert(int arr[], int& n, int index, int value2)
 	}
 	delete[] arr;
 	arr = buffer;
-	for (int i = n-1; i >= index; i--)
+	for (int i = n - 1; i >= index; i--)
 	{
 		arr[i + 1] = arr[i];
 	}
@@ -261,7 +283,7 @@ int* insert(int arr[], int& n, int index, int value2)
 }
 int** insert_row(int** arr, unsigned int& rows, const unsigned int cols, const unsigned int index)
 {
-	int** buffer = new int*[rows + 1];
+	int** buffer = new int* [rows + 1];
 	for (int i = 0; i < rows; i++)
 	{
 		buffer[i] = arr[i];
@@ -276,6 +298,40 @@ int** insert_row(int** arr, unsigned int& rows, const unsigned int cols, const u
 	rows++;
 	return arr;
 }
+void insert_col(int** arr, const unsigned int rows, unsigned int& cols, const unsigned int index)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols + 1]{};
+		for (int j = 0; j < cols; j++)
+			//(j < index ? buffer[j] : buffer[j + 1]) = arr[i][j];
+			buffer[j < index ? j : j + 1] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
+		/*for (int i = 0; i < rows; i++)
+		{
+			for (int j = index; j < cols; j++)
+			{
+				arr[j+1] = arr[j];
+			}
+			arr[index] = new int[cols] {};
+		}*/
+	}
+	cols++;
+
+	/*for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols+1] {};
+		for (int j = 0; j < cols; j++)
+		{
+			if (j >= index)buffer[j + index] = arr[i][j];
+			else buffer[j] = arr[i][j];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols++;*/
+}
 int* pop_back(int arr[], int& n)
 {
 	int* buffer = new int[--n];
@@ -285,7 +341,7 @@ int* pop_back(int arr[], int& n)
 }
 int** pop_row_back(int** arr, unsigned int& rows)
 {
-	int** buffer = new int*[--rows];
+	int** buffer = new int* [--rows];
 	for (int i = 0; i < rows; i++) buffer[i] = arr[i];
 	delete[] arr;
 	return buffer;
@@ -310,9 +366,9 @@ int** pop_row_front(int** arr, unsigned int& rows)
 }
 int* erase(int arr[], int& n, int index1)
 {
-	for (int i = index1; i < n-1; i++)
+	for (int i = index1; i < n - 1; i++)
 	{
-		arr[i] = arr[i+1];
+		arr[i] = arr[i + 1];
 	}
 	n--;
 	return arr;
