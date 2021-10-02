@@ -214,7 +214,7 @@ T* push_back(T arr[], int& n, int value)
 {
 	///Добавление элементов в массив
 	//1. Создаем буферный массив нужного размера
-	int* buffer = new int[n + 1];
+	T* buffer = new T[n + 1];
 	//2. Копируем исходный массив в buffer
 	for (int i = 0; i < n; i++)
 	{
@@ -233,14 +233,14 @@ T* push_back(T arr[], int& n, int value)
 template<typename T>
 T** push_row_back(T** arr, unsigned int& rows, const unsigned int cols)
 {
-	int** buffer = new int* [rows + 1]{};
+	T** buffer = new T* [rows + 1]{};
 	for (int i = 0; i < rows; i++)
 	{
 		buffer[i] = arr[i];
 	}
 	delete[] arr;
 	arr = buffer;
-	arr[rows] = new int[cols] {};
+	arr[rows] = new T[cols] {};
 	rows++;
 	return arr;
 }
@@ -250,7 +250,7 @@ void push_col_back(T** arr, const unsigned int rows, unsigned int& cols)
 
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols + 1]{};
+		T* buffer = new T[cols + 1]{};
 		for (int j = 0; j < cols; j++)
 		{
 			buffer[j] = arr[i][j];
@@ -265,7 +265,7 @@ T* push_front(T arr[], int& n, int value1)
 {
 	///Добавление элементов в массив
 	//1. Создаем буферный массив нужного размера
-	int* buffer = new int[n + 1];
+	T* buffer = new T[n + 1];
 	//2. Копируем исходный массив в buffer
 	for (int i = 0; i < n; i++)
 	{
@@ -284,7 +284,7 @@ T* push_front(T arr[], int& n, int value1)
 template<typename T>
 T** push_row_front(T** arr, unsigned int& rows, const unsigned int cols)
 {
-	int** buffer = new int* [rows + 1]{};
+	T** buffer = new T* [rows + 1]{};
 	for (int i = 0; i < rows; i++)
 	{
 		buffer[i + 1] = arr[i];
@@ -292,7 +292,7 @@ T** push_row_front(T** arr, unsigned int& rows, const unsigned int cols)
 	//delite[] arr[0];
 	delete[] arr;
 	arr = buffer;
-	arr[0] = new int[cols] {};
+	arr[0] = new T[cols] {};
 	rows++;
 	return arr;
 }
@@ -301,7 +301,7 @@ void push_col_front(T** arr, const unsigned int rows, unsigned int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols + 1]{};
+		T* buffer = new T[cols + 1]{};
 		for (int j = 0; j < cols; j++)
 		{
 			buffer[j + 1] = arr[i][j];
@@ -314,7 +314,7 @@ void push_col_front(T** arr, const unsigned int rows, unsigned int& cols)
 template<typename T>
 int* insert(T arr[], int& n, int index, int value2)
 {
-	int* buffer = new int[n + 1];
+	T* buffer = new T[n + 1];
 	for (int i = 0; i < n; i++)
 	{
 		buffer[i] = arr[i];
@@ -332,7 +332,7 @@ int* insert(T arr[], int& n, int index, int value2)
 template<typename T>
 T** insert_row(T** arr, unsigned int& rows, const unsigned int cols, const unsigned int index)
 {
-	int** buffer = new int* [rows + 1];
+	T** buffer = new T* [rows + 1];
 	for (int i = 0; i < rows; i++)
 	{
 		buffer[i] = arr[i];
@@ -343,7 +343,7 @@ T** insert_row(T** arr, unsigned int& rows, const unsigned int cols, const unsig
 	{
 		arr[i + 1] = arr[i];
 	}
-	arr[index] = new int[cols] {};
+	arr[index] = new T[cols] {};
 	rows++;
 	return arr;
 }
@@ -352,7 +352,7 @@ void insert_col(T** arr, const unsigned int rows, unsigned int& cols, const unsi
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols + 1]{};
+		T* buffer = new T[cols + 1]{};
 		for (int j = 0; j < cols; j++)
 			//(j < index ? buffer[j] : buffer[j + 1]) = arr[i][j];
 			buffer[j < index ? j : j + 1] = arr[i][j];
@@ -385,7 +385,7 @@ void insert_col(T** arr, const unsigned int rows, unsigned int& cols, const unsi
 template<typename T>
 T* pop_back(T arr[], int& n)
 {
-	int* buffer = new int[--n];
+	T* buffer = new T[--n];
 	for (int i = 0; i < n; i++) buffer[i] = arr[i];
 	delete[] arr;
 	return buffer;
@@ -393,7 +393,7 @@ T* pop_back(T arr[], int& n)
 template<typename T>
 T** pop_row_back(T** arr, unsigned int& rows)
 {
-	int** buffer = new int* [--rows];
+	T** buffer = new T* [--rows];
 	for (int i = 0; i < rows; i++) buffer[i] = arr[i];
 	delete[] arr;
 	return buffer;
@@ -403,7 +403,7 @@ void pop_col_back(T** arr, const unsigned int rows, unsigned int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols - 1]{};
+		T* buffer = new T[cols - 1]{};
 		for (int j = 0; j < cols-1; j++)
 		{
 			buffer[j] = arr[i][j];
@@ -438,7 +438,7 @@ void pop_col_front(T** arr, const unsigned int rows, unsigned int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols-1]{};
+		T* buffer = new T[cols-1]{};
 		for (int j = 0; j < cols-1; j++)
 		{
 			buffer[j] = arr[i][j+1];
@@ -473,7 +473,7 @@ void erase_col(T** arr, const unsigned int rows, unsigned int& cols, const unsig
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols - 1]{};
+		T* buffer = new T[cols - 1]{};
 		for (int j = 0; j < index; j++)
 		{
 			buffer[j] = arr[i][j];
