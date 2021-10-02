@@ -24,10 +24,13 @@ int** insert_row(int** arr, unsigned int& rows, const unsigned int cols, const u
 void insert_col(int** arr, const unsigned int rows, unsigned int& cols, const unsigned int index);
 int* pop_back(int arr[], int& n);
 int** pop_row_back(int** arr, unsigned int& rows);
+void pop_col_back(int** arr, const unsigned int rows, unsigned int& cols);
 int* pop_front(int arr[], int& n);
 int** pop_row_front(int** arr, unsigned int& rows);
+void pop_col_front(int** arr, const unsigned int rows, unsigned int& cols);
 int* erase(int arr[], int& n, int index1);
 int** erase_row(int** arr, unsigned int& rows, const unsigned int index);
+void erase_col(int** arr, const unsigned int rows, unsigned int& cols, const unsigned int index);
 
 void main()
 {
@@ -108,6 +111,16 @@ void main()
 	int index;
 	cout << "Введите индекс добавляемого столбца: "; cin >> index;
 	insert_col(arr, rows, cols, index);
+	Print(arr, rows, cols);
+	cout << endl;
+	pop_col_back(arr, rows, cols);
+	Print(arr, rows, cols);
+	cout << endl;
+	pop_col_front(arr, rows, cols);
+	Print(arr, rows, cols);
+	cout << endl;
+	cout << "Введите индекс удаляемого столбца: "; cin >> index;
+	erase_col(arr, rows, cols, index);
 	Print(arr, rows, cols);
 }
 
@@ -346,6 +359,20 @@ int** pop_row_back(int** arr, unsigned int& rows)
 	delete[] arr;
 	return buffer;
 }
+void pop_col_back(int** arr, const unsigned int rows, unsigned int& cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols - 1]{};
+		for (int j = 0; j < cols-1; j++)
+		{
+			buffer[j] = arr[i][j];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	--cols;
+}
 int* pop_front(int arr[], int& n)
 {
 	for (int i = 1; i < n; i++)
@@ -364,6 +391,20 @@ int** pop_row_front(int** arr, unsigned int& rows)
 	rows--;
 	return arr;
 }
+void pop_col_front(int** arr, const unsigned int rows, unsigned int& cols)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols-1]{};
+		for (int j = 0; j < cols-1; j++)
+		{
+			buffer[j] = arr[i][j+1];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	--cols;
+}
 int* erase(int arr[], int& n, int index1)
 {
 	for (int i = index1; i < n - 1; i++)
@@ -381,4 +422,22 @@ int** erase_row(int** arr, unsigned int& rows, const unsigned int index)
 	}
 	rows--;
 	return arr;
+}
+void erase_col(int** arr, const unsigned int rows, unsigned int& cols, const unsigned int index)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		int* buffer = new int[cols - 1]{};
+		for (int j = 0; j < index; j++)
+		{
+			buffer[j] = arr[i][j];
+		}
+		for (int j = index; j < cols-1; j++)
+		{
+			buffer[j] = arr[i][j+1];
+		}
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	--cols;
 }
