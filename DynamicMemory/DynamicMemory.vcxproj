@@ -139,7 +139,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="allocate.cpp" />
+    <ClCompile Include="clear.cpp" />
+    <ClCompile Include="erase.cpp" />
+    <ClCompile Include="FillRand.cpp" />
+    <ClCompile Include="Insert.cpp" />
+    <ClCompile Include="Pop_back.cpp" />
+    <ClCompile Include="Pop_front.cpp" />
+    <ClCompile Include="Print.cpp" />
+    <ClCompile Include="Push_back.cpp" />
+    <ClCompile Include="Push_front.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="allocate.h" />
+    <ClInclude Include="clear.h" />
+    <ClInclude Include="Erase.h" />
+    <ClInclude Include="FillRand.h" />
+    <ClInclude Include="Insert.h" />
+    <ClInclude Include="Pop_back.h" />
+    <ClInclude Include="Pop_front.h" />
+    <ClInclude Include="Print.h" />
+    <ClInclude Include="Push_back.h" />
+    <ClInclude Include="Push_front.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
